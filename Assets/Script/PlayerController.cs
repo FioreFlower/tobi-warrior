@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
             animator.Play("Attack");
         } else
         {
-            if(!IsInAnimation("Attack"))
+            if (IsInAnimation("Attack")) return;
             isGrounded = true;
             Idle();
         }
