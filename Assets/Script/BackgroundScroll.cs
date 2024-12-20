@@ -7,17 +7,11 @@ public class BackgroundScroll : MonoBehaviour
     public float scrollSpeed;
     public MeshRenderer meshRenderer;
 
-    bool isFlying = false;
-    void ScrollingBackground()
+    bool _isFlying = false;
+    public void ScrollingBackground()
     {
         meshRenderer.material.mainTextureOffset += new Vector2(scrollSpeed*Time.deltaTime, 0);
     }
 
-    void Update()
-    {
-        if (isFlying)
-        {
-            ScrollingBackground();
-        }
-    }
+    
 }

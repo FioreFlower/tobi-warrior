@@ -556,7 +556,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 185785156703761159, guid: 9ba7e3ba3f47a4ad58f5b5dd39b8f96f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.13
+      value: -2.22
       objectReference: {fileID: 0}
     - target: {fileID: 185785156703761159, guid: 9ba7e3ba3f47a4ad58f5b5dd39b8f96f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -594,6 +594,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 890191779675852695, guid: 9ba7e3ba3f47a4ad58f5b5dd39b8f96f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.11
+      objectReference: {fileID: 0}
     - target: {fileID: 1012886537451025547, guid: 9ba7e3ba3f47a4ad58f5b5dd39b8f96f, type: 3}
       propertyPath: turret
       value: 
@@ -602,6 +606,18 @@ PrefabInstance:
       propertyPath: lineRenderer
       value: 
       objectReference: {fileID: 1760346758}
+    - target: {fileID: 5541209710002728911, guid: 9ba7e3ba3f47a4ad58f5b5dd39b8f96f, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5541209710002728911, guid: 9ba7e3ba3f47a4ad58f5b5dd39b8f96f, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.827451
+      objectReference: {fileID: 0}
+    - target: {fileID: 5541209710002728911, guid: 9ba7e3ba3f47a4ad58f5b5dd39b8f96f, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.56078434
+      objectReference: {fileID: 0}
     - target: {fileID: 7995154467838195749, guid: 9ba7e3ba3f47a4ad58f5b5dd39b8f96f, type: 3}
       propertyPath: m_Name
       value: Warrior
@@ -976,7 +992,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1415073272}
-  turret: {fileID: 0}
+  bgScrolls: []
   turretRotationSpeed: 30
 --- !u!4 &1365058748
 Transform:
