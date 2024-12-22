@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Camera mainCamera;
     private Animator _animator;
     private Rigidbody2D _rb;
     [SerializeField] private GameObject damageField;
     private bool _isGrounded = true;
-    private bool _jumpCount = true;
-    
+    private bool _canJump = true;
     private Vector2 _startDragPosition;
     private Vector2 _endDragPosition;
     
@@ -33,17 +33,24 @@ public class PlayerController : MonoBehaviour
 
     void OnMouseDown()
     {
-        _startDragPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if(!_canJump) return;
+        _startDragPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         isDragging = true;
         Croush();
     }
     
     void OnMouseDrag()
     {
-        if (!isDragging) return;
+        if (!isDragging || !_canJump) return;
 
-        Vector2 currentDragPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 currentDragPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        
+        currentDragPosition.x = Mathf.Clamp(currentDragPosition.x, -5f, 0);
+        currentDragPosition.y = Mathf.Clamp(currentDragPosition.y, -5f, 0);
+        
         Vector2 launchDirection = (_startDragPosition - currentDragPosition).normalized;
+        
+        
         float dragDistance = Vector2.Distance(_startDragPosition, currentDragPosition);
         Vector2 launchVelocity = launchDirection * dragDistance * launchForceMultiplier;
 
@@ -63,10 +70,11 @@ public class PlayerController : MonoBehaviour
     {
         if (!isDragging) return;
 
-        _endDragPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        _endDragPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         
         isDragging = false;
         _isGrounded = false;
+        _canJump = false;
         
         _animator.Play("jump");
         Vector2 launchDirection = (_startDragPosition - _endDragPosition).normalized;
@@ -85,7 +93,7 @@ public class PlayerController : MonoBehaviour
     
     public void Croush()
     {
-        if (_jumpCount)
+        if (_canJump)
             _animator.Play("Croush");
     }
     public void Idle() {
@@ -130,9 +138,8 @@ public class PlayerController : MonoBehaviour
 
     void JumpToFall()
     {
-        if(!_jumpCount) return;
         _animator.Play("Fall");
-        _jumpCount = false;
+        _canJump = false;
     }
     
     private void ClearTrajectory()
@@ -196,7 +203,7 @@ public class PlayerController : MonoBehaviour
                 if (!IsInAnimation("Fall"))
                 {
                     JumpToFall();
-                    
+
                 }
             }
         }
