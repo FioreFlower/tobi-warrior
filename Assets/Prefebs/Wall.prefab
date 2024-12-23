@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 81845137631442904}
   - component: {fileID: 3051951819339167959}
   - component: {fileID: 7514675444370793702}
+  - component: {fileID: 8527846594768113872}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Enemy
@@ -158,3 +159,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8527846594768113872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5873391036810872795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a34f8dba78614e63955676766a72c05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 5
+  damageMultiplier: 1
+  minimumDamageThreshold: 5
+  destroyEffect: {fileID: 104829970813648393, guid: 980fc776a6b47439f9faccad329cbc06, type: 3}
+  hitSound: {fileID: 0}
+  destroySound: {fileID: 0}
+  smokePrefab: {fileID: 0}
+  isDead: 0

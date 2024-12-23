@@ -125,7 +125,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fb5c119f5a2964f2cbc0a6448123ef54, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -193,3 +193,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a34f8dba78614e63955676766a72c05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 5
+  damageMultiplier: 1
+  minimumDamageThreshold: 5
+  destroyEffect: {fileID: 104829970813648393, guid: 980fc776a6b47439f9faccad329cbc06, type: 3}
+  hitSound: {fileID: 0}
+  destroySound: {fileID: 0}

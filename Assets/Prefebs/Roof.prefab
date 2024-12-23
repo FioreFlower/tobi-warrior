@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8689743659358028119}
   - component: {fileID: 3861295298034232459}
   - component: {fileID: 3298916959868059688}
+  - component: {fileID: -3171785547174691984}
   m_Layer: 0
   m_Name: Roof
   m_TagString: Enemy
@@ -158,3 +159,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-3171785547174691984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4062997994534129048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a34f8dba78614e63955676766a72c05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 5
+  damageMultiplier: 1
+  minimumDamageThreshold: 5
+  destroyEffect: {fileID: 104829970813648393, guid: 980fc776a6b47439f9faccad329cbc06, type: 3}
+  hitSound: {fileID: 0}
+  destroySound: {fileID: 0}
+  smokePrefab: {fileID: 0}
+  isDead: 0

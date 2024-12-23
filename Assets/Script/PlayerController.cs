@@ -9,8 +9,6 @@ public class PlayerController : MonoBehaviour
     private Animator _animator;
     private Rigidbody2D _rb;
     [SerializeField] private GameObject damageField;
-    private bool _isGrounded = true;
-    private bool _canJump = true;
     private Vector2 _startDragPosition;
     private Vector2 _endDragPosition;
     
@@ -22,11 +20,16 @@ public class PlayerController : MonoBehaviour
     private readonly List<GameObject> _trajectoryDots = new List<GameObject>(); // 생성된 점 리스트
     
     private bool isDragging = false;
+    private bool _isGrounded = true;
+    private bool _canJump = true;
+    public AudioSource aSource;
+    public AudioClip jumpSound;
     
-    public bool IsGrounded() => _isGrounded;
-    
+    private GameObject instantDamageField;
     void Awake()
     {
+        aSource = FindObjectOfType<AudioSource>();
+        mainCamera = Camera.main;
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
     }
@@ -44,13 +47,7 @@ public class PlayerController : MonoBehaviour
         if (!isDragging || !_canJump) return;
 
         Vector2 currentDragPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        
-        currentDragPosition.x = Mathf.Clamp(currentDragPosition.x, -5f, 0);
-        currentDragPosition.y = Mathf.Clamp(currentDragPosition.y, -5f, 0);
-        
         Vector2 launchDirection = (_startDragPosition - currentDragPosition).normalized;
-        
-        
         float dragDistance = Vector2.Distance(_startDragPosition, currentDragPosition);
         Vector2 launchVelocity = launchDirection * dragDistance * launchForceMultiplier;
 
@@ -82,6 +79,8 @@ public class PlayerController : MonoBehaviour
 
         _rb.AddForce(launchDirection * dragDistance * launchForceMultiplier, ForceMode2D.Impulse);
 
+        aSource.PlayOneShot(jumpSound);
+        
         // 시각적 피드백 초기화
         if (lineRenderer != null)
         {
@@ -102,12 +101,12 @@ public class PlayerController : MonoBehaviour
     
     void Attack()
     {
-        damageField.SetActive(true);
+        instantDamageField = Instantiate(damageField, transform.position, Quaternion.identity);
     }
 
     void AttackEnd()
     {
-        damageField.SetActive(false);
+        Destroy(instantDamageField);
     }
     
     private bool IsInAnimation(string animationName)
@@ -128,6 +127,7 @@ public class PlayerController : MonoBehaviour
         {
             _isGrounded = true;
             _animator.Play("Attack");
+            
         } else
         {
             if (IsInAnimation("Attack")) return;
@@ -153,7 +153,7 @@ public class PlayerController : MonoBehaviour
     private void DrawTrajectory(Vector2 startPoint, Vector2 launchVelocity)
     {
         Vector2 gravity = Physics2D.gravity;
-        float timeStep = 0.01f;
+        float timeStep = 0.05f;
         float totalDistance = 0f;
 
         Vector2 previousPoint = startPoint;

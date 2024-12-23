@@ -5,12 +5,26 @@ using UnityEngine;
 
 public class DamageField : MonoBehaviour
 {
-  private void OnTriggerEnter2D(Collider2D other)
+  private BarrelController barrelController;
+
+  void Start()
   {
-    Debug.Log(other.name);
-    if (!other.CompareTag("Ground") && !other.CompareTag("Player"))
+    barrelController = FindObjectOfType<BarrelController>();
+  }
+  
+  private void OnCollisionEnter2D(Collision2D collision)
+  {
+    if (!collision.gameObject.CompareTag("Ground") && !collision.gameObject.CompareTag("Player"))
     {
-      Destroy(other.gameObject);
+      if (collision.gameObject.name == "Barrel") AttackBarrel();
+      else
+      {
+        collision.gameObject.GetComponent<Rigidbody2D>().AddForceAtPosition(Vector2.right*500, transform.position);
+      }
     }
+  }
+  void AttackBarrel()
+  {
+    barrelController.GetDamage();
   }
 }
