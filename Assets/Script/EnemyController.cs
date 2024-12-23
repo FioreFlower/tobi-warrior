@@ -6,9 +6,9 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
   [Header("Enemy Properties")]
-  public float health = 5f;
+  private float health = 50f;
   public float damageMultiplier = 1f;
-  public float minimumDamageThreshold = 5f;
+  private float minimumDamageThreshold = 5f;
 
   [Header("Effects")]
   public GameObject destroyEffect;
@@ -68,11 +68,11 @@ public class EnemyController : MonoBehaviour
   
   void DestroyObstacle()
   {
-    GameObject effect = null;
+    
     // 파괴 효과 생성
     if (destroyEffect != null)
-    {
-      effect = Instantiate(destroyEffect, transform.position, Quaternion.identity);
+    { 
+      Instantiate(destroyEffect, transform.position, Quaternion.identity);
     }
 
     // 파괴 사운드 재생
@@ -85,7 +85,6 @@ public class EnemyController : MonoBehaviour
     GameManager.Instance.OnEnemyDestroyed();
 
     Destroy(gameObject);
-    if (effect !=null ) Destroy(effect);
   }
 
   void PlayHitSound()

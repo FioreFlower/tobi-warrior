@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8527846594768113872}
   m_Layer: 0
   m_Name: Wall
-  m_TagString: Enemy
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -171,11 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a34f8dba78614e63955676766a72c05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 5
   damageMultiplier: 1
-  minimumDamageThreshold: 5
   destroyEffect: {fileID: 104829970813648393, guid: 980fc776a6b47439f9faccad329cbc06, type: 3}
   hitSound: {fileID: 0}
   destroySound: {fileID: 0}
-  smokePrefab: {fileID: 0}
-  isDead: 0
