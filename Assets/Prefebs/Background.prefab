@@ -48,7 +48,6 @@ GameObject:
   - component: {fileID: 20954647907526976}
   - component: {fileID: 2098821199340948463}
   - component: {fileID: 1319091392254312513}
-  - component: {fileID: 8666651712926349032}
   m_Layer: 0
   m_Name: Mountin
   m_TagString: Untagged
@@ -143,20 +142,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &8666651712926349032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3013764296604314239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb2d6ef1ae78549daad78d1ba5056c0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scrollSpeed: 2
-  meshRenderer: {fileID: 2098821199340948463}
 --- !u!1 &3085996835942441487
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +260,6 @@ GameObject:
   - component: {fileID: 8038288553972993062}
   - component: {fileID: 1991075996795339060}
   - component: {fileID: 7467533469446366670}
-  - component: {fileID: 6065783070105364427}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -370,20 +354,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &6065783070105364427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3601717331388107794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb2d6ef1ae78549daad78d1ba5056c0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scrollSpeed: 4
-  meshRenderer: {fileID: 1991075996795339060}
 --- !u!1 &8430802938545057259
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,7 +366,6 @@ GameObject:
   - component: {fileID: 7107671920750022462}
   - component: {fileID: 3535119734725775943}
   - component: {fileID: 4953744976534188121}
-  - component: {fileID: 5246437325621972020}
   m_Layer: 0
   m_Name: Cloud
   m_TagString: Untagged
@@ -491,20 +460,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &5246437325621972020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8430802938545057259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb2d6ef1ae78549daad78d1ba5056c0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scrollSpeed: 1
-  meshRenderer: {fileID: 3535119734725775943}
 --- !u!1 &8986854587564133736
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,7 +472,6 @@ GameObject:
   - component: {fileID: 1093821742215554900}
   - component: {fileID: 3544235026873112864}
   - component: {fileID: 7988546493708480509}
-  - component: {fileID: 1533920106087450436}
   m_Layer: 0
   m_Name: Mountin2
   m_TagString: Untagged
@@ -612,17 +566,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1533920106087450436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8986854587564133736}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb2d6ef1ae78549daad78d1ba5056c0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scrollSpeed: 3
-  meshRenderer: {fileID: 3544235026873112864}

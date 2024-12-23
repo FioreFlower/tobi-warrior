@@ -168,7 +168,6 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 gravity = Physics2D.gravity;
         float timeStep = 0.05f;
-        float totalDistance = 0f;
 
         Vector2 previousPoint = startPoint;
 
@@ -217,7 +216,6 @@ public class PlayerController : MonoBehaviour
                 if (!IsInAnimation("Fall"))
                 {
                     JumpToFall();
-
                 }
             }
         }
