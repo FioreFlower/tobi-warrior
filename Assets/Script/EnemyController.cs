@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
 {
   [Header("Enemy Properties")]
   private float health = 50f;
-  public float damageMultiplier = 1f;
+  public float damageMultiplier = 10f;
   private float minimumDamageThreshold = 5f;
 
   [Header("Effects")]
@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour
   void OnCollisionEnter2D(Collision2D collision)
   {
     float impactForce = collision.relativeVelocity.magnitude;
-
+    
     // 최소 충격량보다 작으면 데미지 없음
     if (impactForce < minimumDamageThreshold) return;
 
@@ -41,7 +41,7 @@ public class EnemyController : MonoBehaviour
     PlayHitSound();
   }
   
-  void TakeDamage(float damage)
+  public void TakeDamage(float damage)
   {
     health -= damage;
 
@@ -82,7 +82,10 @@ public class EnemyController : MonoBehaviour
     }
 
     // 게임 매니저에 알림
-    GameManager.Instance.OnEnemyDestroyed();
+    if (gameObject.CompareTag("Enemy"))
+    {
+      GameManager.Instance.OnEnemyDestroyed();
+    }
 
     Destroy(gameObject);
   }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8787848903157250251}
   m_Layer: 0
   m_Name: DamageField
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,7 +92,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11e8f7db1c02c4e2ba2636cb28cc714f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  barrelController: {fileID: 0}
 --- !u!82 &3130993345315561924
 AudioSource:
   m_ObjectHideFlags: 0

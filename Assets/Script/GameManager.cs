@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     public BarrelController barrelController;
 
     
+    CameraController cameraController;
+    
     void Awake()
     {
         if (Instance == null)
@@ -44,6 +46,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        cameraController = Camera.main.GetComponent<CameraController>();
         InitializeGame();
     }
     
@@ -97,6 +100,7 @@ public class GameManager : MonoBehaviour
             GameObject newWarrior = Instantiate(warriorPrefab, spawnPoint.position, Quaternion.identity);
             playerLeft--;
             UpdateUI();
+            cameraController.SetTarget(newWarrior.transform);
         }
     }
     
@@ -124,5 +128,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(barrel.gameObject);
         }
+
+        if ( GameObject.FindGameObjectWithTag("Player") == null)
+        {
+            SpawnNewWarrior();
+        }
+
+        CheckWinCondition();
     }
 }

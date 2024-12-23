@@ -7,6 +7,7 @@ public class DamageField : MonoBehaviour
 {
   private BarrelController barrelController;
 
+  private EnemyController _enemyController;
   void Start()
   {
     barrelController = FindObjectOfType<BarrelController>();
@@ -16,10 +17,14 @@ public class DamageField : MonoBehaviour
   {
     if (!collision.gameObject.CompareTag("Ground") && !collision.gameObject.CompareTag("Player"))
     {
-      if (collision.gameObject.name == "Barrel") AttackBarrel();
+      if (collision.gameObject.name == "Barrel")
+      {
+        AttackBarrel();
+      }
       else
       {
-        collision.gameObject.GetComponent<Rigidbody2D>().AddForceAtPosition(Vector2.right*500, transform.position);
+        collision.gameObject.GetComponent<Rigidbody2D>().AddForceAtPosition(Vector2.right * 50000, transform.position);
+        collision.gameObject.GetComponent<EnemyController>()?.TakeDamage(50f);
       }
     }
   }

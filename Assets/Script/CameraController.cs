@@ -33,8 +33,14 @@ public class CameraController : MonoBehaviour
   {
     if (canMove)
     {
+      if(target == null) return;
       CameraMovement();
     }
+  }
+
+  public void SetTarget(Transform newTarget)
+  {
+    target = newTarget;
   }
 
   void CameraMovement()

@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
         _rb.AddForce(launchDirection * dragDistance * launchForceMultiplier, ForceMode2D.Impulse);
 
         aSource.PlayOneShot(jumpSound);
-        
+        StartCoroutine(DestroyAfterDelay());
         // 시각적 피드백 초기화
         if (lineRenderer != null)
         {
@@ -88,6 +88,21 @@ public class PlayerController : MonoBehaviour
         }
         
         ClearTrajectory();
+    }
+    
+    IEnumerator DestroyAfterDelay()
+    {
+        yield return new WaitForSeconds(5f);
+        while (true)
+        {
+            if (gameObject != null)
+            {
+                if (!IsInAnimation("Attack")) 
+                    Destroy(gameObject);
+                
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
     }
     
     public void Croush()
@@ -121,9 +136,8 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        
-        Debug.Log(collision.gameObject.tag);
-        if (collision.gameObject.CompareTag("Enemy"))
+        collision.gameObject.GetComponent<EnemyController>()?.TakeDamage(50f);
+        if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Wall"))
         {
             _isGrounded = true;
             _animator.Play("Attack");
