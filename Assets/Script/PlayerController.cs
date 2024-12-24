@@ -1,12 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
-    public AudioSource aSource;
+    private AudioSource _aSource;
     public AudioClip jumpSound;
     
     [SerializeField] private LineRenderer lineRenderer;
@@ -22,7 +20,7 @@ public class PlayerController : MonoBehaviour
     private Camera _mainCamera;
     private Vector2 _startDragPosition;
     private Vector2 _endDragPosition;
-    private bool _isDragging = false;
+    private bool _isDragging;
     private bool _isGrounded = true;
     private bool _canJump = true;
     
@@ -35,9 +33,9 @@ public class PlayerController : MonoBehaviour
         Animator.StringToHash("Croush")
     };
     
-    private void Awake()
+    private void Start()
     {
-        aSource = FindObjectOfType<AudioSource>();
+        _aSource = FindObjectOfType<AudioSource>();
         _mainCamera = Camera.main;
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
@@ -80,12 +78,18 @@ public class PlayerController : MonoBehaviour
         float dragDistance = Vector2.Distance(_startDragPosition, _endDragPosition);
         _rb.AddForce(launchDirection * dragDistance * launchForceMultiplier, ForceMode2D.Impulse);
 
-        aSource.PlayOneShot(jumpSound);
+        PlaySoundOneShot(jumpSound);
         StartCoroutine(DestroyAfterDelay());
         
         ClearVisualFeedback();
         ClearTrajectory();
         GameManager.Instance.SetActiveMiniMap(false);
+    }
+
+    private void PlaySoundOneShot(AudioClip clip)
+    {
+        if (clip == null || !_aSource) return;
+        _aSource.PlayOneShot(clip);
     }
 
     private IEnumerator DestroyAfterDelay()
@@ -115,6 +119,13 @@ public class PlayerController : MonoBehaviour
         }
     }
     
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            _isGrounded = false;
+        }
+    }
     private void Update()
     {
         if (!_isGrounded)
@@ -127,6 +138,11 @@ public class PlayerController : MonoBehaviour
             {
                 PlayAnimation(AnimationState.Fall);
                 _canJump = false;
+            }
+            else if (_rb.velocity.y == 0 && !IsInAnimation(AnimationState.Attack))
+            {
+                PlayAnimation(AnimationState.Idle);
+                _isGrounded = true;
             }
         }
     }

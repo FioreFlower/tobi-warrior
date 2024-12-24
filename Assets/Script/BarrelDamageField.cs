@@ -5,7 +5,7 @@ using UnityEngine;
 public class BarrelDamageField : MonoBehaviour
 {
   [Header("Explosion Settings")]
-  public float explosionForce = 10f; // 폭발력
+  public float explosionForce = 1f; // 폭발력
   public float explosionRadius = 5f; // 폭발 반경
   [Header("References")]
   public Rigidbody2D rb;
@@ -21,9 +21,6 @@ public class BarrelDamageField : MonoBehaviour
     {
       ApplyExplosionForce(hit);
     }
-
-    // Barrel 파괴
-    Destroy(gameObject);
   }
 
   private void ApplyExplosionForce(Collider2D target)

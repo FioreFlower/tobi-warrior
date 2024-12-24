@@ -10,6 +10,7 @@ public class BarrelController : MonoBehaviour
     private bool isBoom = false;
     public void GetDamage()
     {
+        if(!gameObject) return;
         boom.SetActive(true);
         barrel.SetActive(false);
         gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;

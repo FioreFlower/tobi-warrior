@@ -86,7 +86,7 @@ public class EnemyController : MonoBehaviour
   private void OnDestroy()
   {
     // 게임 매니저에 알림
-    if (gameObject.CompareTag("Enemy"))
+    if (gameObject.CompareTag("Enemy") && gameObject)
     {
       GameManager.Instance.OnEnemyDestroyed();
     }

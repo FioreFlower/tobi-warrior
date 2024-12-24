@@ -6,7 +6,6 @@ using UnityEngine;
 public class DamageField : MonoBehaviour
 {
   private BarrelController barrelController;
-
   private EnemyController _enemyController;
 
   private void Awake()
