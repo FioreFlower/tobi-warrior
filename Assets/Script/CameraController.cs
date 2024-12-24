@@ -27,6 +27,7 @@ public class CameraController : MonoBehaviour
     yield return new WaitForSeconds(3);
     _canMove = true;
     _target = GameObject.FindGameObjectWithTag("Player").transform;
+    GameManager.Instance.SetActiveMiniMap(true);
   }
 
   void LateUpdate()

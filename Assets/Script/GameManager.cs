@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public Text birdsLeftText;
     public GameObject gameOverPanel;
     public GameObject levelCompletePanel;
+    public GameObject MiniMap;
     
     private int playerLeft;
     private int enemyLeft;
@@ -63,7 +64,6 @@ public class GameManager : MonoBehaviour
     public void OnEnemyDestroyed()
     {
         enemyLeft--;
-        Debug.Log("enemy left :"+enemyLeft);
         CheckWinCondition();
     }
 
@@ -111,7 +111,12 @@ public class GameManager : MonoBehaviour
             birdsLeftText.text = $"Warriors Left: {playerLeft}";
         }
     }
-    
+
+    public void SetActiveMiniMap(Boolean isActive)
+    {
+        MiniMap.SetActive(isActive);
+    }
+
     public void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float launchForceMultiplier = 3f;
     [SerializeField] private int maxDots = 10;
 
-    private readonly List<GameObject> _trajectoryDots = new List<GameObject>(); // 생성된 점 리스트
+    private readonly List<GameObject> _trajectoryDots = new List<GameObject>(); // 활성화된 점 리스트
     private GameObject _instantDamageField;
     private Animator _animator;
     private Rigidbody2D _rb;
@@ -84,16 +85,17 @@ public class PlayerController : MonoBehaviour
         
         ClearVisualFeedback();
         ClearTrajectory();
+        GameManager.Instance.SetActiveMiniMap(false);
     }
 
     private IEnumerator DestroyAfterDelay()
     {
         yield return new WaitForSeconds(5f);
         
-        if (gameObject && !IsInAnimation(AnimationState.Attack))
-        {
-            Destroy(gameObject);
-        }
+        // 공격 애니메이션이 실행 중이면 대기
+        yield return new WaitUntil(() => !IsInAnimation(AnimationState.Attack));
+        
+        Destroy(gameObject);
     }
     
     private void OnCollisionEnter2D(Collision2D collision)
@@ -136,7 +138,6 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < maxDots; i++)
         {
             float t = i * timeStep;
-
             // 현재 점 위치 계산
             Vector2 currentPoint = startPoint + launchVelocity * t + 0.1f * gravity * t * t;
             
@@ -164,7 +165,7 @@ public class PlayerController : MonoBehaviour
     {
         foreach (GameObject dot in _trajectoryDots)
         {
-            dot.SetActive(false);
+            dot.SetActive(false); // 점 비활성화
         }
     }
     
@@ -205,5 +206,10 @@ public class PlayerController : MonoBehaviour
     {
         Destroy(_instantDamageField);
     }
-    
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.SetActiveMiniMap(true);
+        Destroy(_instantDamageField);
+    }
 }

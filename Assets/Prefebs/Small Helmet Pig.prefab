@@ -193,9 +193,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a34f8dba78614e63955676766a72c05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 5
-  damageMultiplier: 1
+  health: 50
+  damageMultiplier: 5
   minimumDamageThreshold: 5
   destroyEffect: {fileID: 104829970813648393, guid: 980fc776a6b47439f9faccad329cbc06, type: 3}
-  hitSound: {fileID: 0}
-  destroySound: {fileID: 0}
+  hitSound: {fileID: 8300000, guid: 8b23b175a78d6b5458322e3a6c9905d0, type: 3}
+  destroySound: {fileID: 8300000, guid: 7c47b20bb9874304a809dc5580d403ba, type: 3}
