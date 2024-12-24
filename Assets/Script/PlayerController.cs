@@ -5,172 +5,134 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Camera mainCamera;
-    private Animator _animator;
-    private Rigidbody2D _rb;
-    [SerializeField] private GameObject damageField;
-    private Vector2 _startDragPosition;
-    private Vector2 _endDragPosition;
-    
-    [SerializeField] private float launchForceMultiplier = 1f;
-    [SerializeField] private LineRenderer lineRenderer;
-    
-    [SerializeField] private GameObject trajectoryDotPrefab; // 궤적 점으로 사용할 원 프리팹
-    [SerializeField] private int maxDots = 15;              // 최대 점 개수
-    private readonly List<GameObject> _trajectoryDots = new List<GameObject>(); // 생성된 점 리스트
-    
-    private bool isDragging = false;
-    private bool _isGrounded = true;
-    private bool _canJump = true;
     public AudioSource aSource;
     public AudioClip jumpSound;
     
-    private GameObject instantDamageField;
-    void Awake()
+    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private GameObject damageField;
+    [SerializeField] private GameObject trajectoryDotPrefab;
+    [SerializeField] private float launchForceMultiplier = 3f;
+    [SerializeField] private int maxDots = 10;
+
+    private readonly List<GameObject> _trajectoryDots = new List<GameObject>(); // 생성된 점 리스트
+    private GameObject _instantDamageField;
+    private Animator _animator;
+    private Rigidbody2D _rb;
+    private Camera _mainCamera;
+    private Vector2 _startDragPosition;
+    private Vector2 _endDragPosition;
+    private bool _isDragging = false;
+    private bool _isGrounded = true;
+    private bool _canJump = true;
+    
+    private enum AnimationState { Idle, Jump, Fall, Attack, Croush }
+    private static readonly int[] AnimationHashes = {
+        Animator.StringToHash("Idle"),
+        Animator.StringToHash("jump"),
+        Animator.StringToHash("Fall"),
+        Animator.StringToHash("Attack"),
+        Animator.StringToHash("Croush")
+    };
+    
+    private void Awake()
     {
         aSource = FindObjectOfType<AudioSource>();
-        mainCamera = Camera.main;
+        _mainCamera = Camera.main;
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    void OnMouseDown()
+    private void OnMouseDown()
     {
         if(!_canJump) return;
-        _startDragPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        isDragging = true;
-        Croush();
+        _startDragPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        _isDragging = true;
+        PlayAnimation(AnimationState.Croush);
     }
-    
-    void OnMouseDrag()
-    {
-        if (!isDragging || !_canJump) return;
 
-        Vector2 currentDragPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+    private void OnMouseDrag()
+    {
+        if (!_isDragging || !_canJump) return;
+
+        Vector2 currentDragPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
         Vector2 launchDirection = (_startDragPosition - currentDragPosition).normalized;
         float dragDistance = Vector2.Distance(_startDragPosition, currentDragPosition);
         Vector2 launchVelocity = launchDirection * dragDistance * launchForceMultiplier;
 
         
-        // 시각적 피드백 표시
-        if (lineRenderer != null)
-        {
-            lineRenderer.positionCount = 2;
-            lineRenderer.SetPosition(0, _startDragPosition);
-            lineRenderer.SetPosition(1, currentDragPosition);
-        }
-        // 궤적 표시
-        DrawTrajectory(_startDragPosition, launchVelocity);
+        DrawVisualFeedback(currentDragPosition);
+        DrawTrajectory(_startDragPosition, launchVelocity); // 궤적 표시
     }
-    
-    void OnMouseUp()
-    {
-        if (!isDragging) return;
 
-        _endDragPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+    private void OnMouseUp()
+    {
+        if (!_isDragging) return;
+
+        _endDragPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
         
-        isDragging = false;
+        _isDragging = false;
         _isGrounded = false;
         _canJump = false;
         
-        _animator.Play("jump");
+        PlayAnimation(AnimationState.Jump);
         Vector2 launchDirection = (_startDragPosition - _endDragPosition).normalized;
         float dragDistance = Vector2.Distance(_startDragPosition, _endDragPosition);
-
         _rb.AddForce(launchDirection * dragDistance * launchForceMultiplier, ForceMode2D.Impulse);
 
         aSource.PlayOneShot(jumpSound);
         StartCoroutine(DestroyAfterDelay());
-        // 시각적 피드백 초기화
-        if (lineRenderer != null)
-        {
-            lineRenderer.positionCount = 0;
-        }
         
+        ClearVisualFeedback();
         ClearTrajectory();
     }
-    
-    IEnumerator DestroyAfterDelay()
+
+    private IEnumerator DestroyAfterDelay()
     {
         yield return new WaitForSeconds(5f);
-        while (true)
+        
+        if (gameObject && !IsInAnimation(AnimationState.Attack))
         {
-            if (gameObject != null)
-            {
-                if (!IsInAnimation("Attack")) 
-                    Destroy(gameObject);
-                
-                yield return new WaitForSeconds(0.1f);
-            }
+            Destroy(gameObject);
         }
     }
     
-    public void Croush()
-    {
-        if (_canJump)
-            _animator.Play("Croush");
-    }
-    public void Idle() {
-        _animator.Play("Idle");
-    }
-    
-    void Attack()
-    {
-        instantDamageField = Instantiate(damageField, transform.position, Quaternion.identity);
-    }
-
-    void AttackEnd()
-    {
-        Destroy(instantDamageField);
-    }
-    
-    private bool IsInAnimation(string animationName)
-    {
-        // 현재 애니메이터의 상태 정보 가져오기
-        AnimatorStateInfo currentState = _animator.GetCurrentAnimatorStateInfo(0);
-
-        // 공격 애니메이션 상태인지 확인
-        return currentState.IsName(animationName);
-    }
-
-
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         collision.gameObject.GetComponent<EnemyController>()?.TakeDamage(50f);
         if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Wall"))
         {
             _isGrounded = true;
-            _animator.Play("Attack");
+            PlayAnimation(AnimationState.Attack);
             
         } else
         {
-            if (IsInAnimation("Attack")) return;
+            if (IsInAnimation(AnimationState.Attack)) return;
+            
             _isGrounded = true;
-            Idle();
+            PlayAnimation(AnimationState.Idle);
         }
     }
-
-    void JumpToFall()
-    {
-        _animator.Play("Fall");
-        _canJump = false;
-    }
     
-    private void ClearTrajectory()
+    private void Update()
     {
-        foreach (GameObject dot in _trajectoryDots)
+        if (!_isGrounded)
         {
-            dot.SetActive(false);
+            if (_rb.velocity.y > 0 && !IsInAnimation(AnimationState.Jump)) // 올라가는 중이면 Jump 애니메이션 재생 
+            {
+                PlayAnimation(AnimationState.Jump);
+            }
+            else if (_rb.velocity.y < 0 && !IsInAnimation(AnimationState.Fall)) // 떨어지기 시작하면 Fall 애니메이션 재생
+            {
+                PlayAnimation(AnimationState.Fall);
+                _canJump = false;
+            }
         }
     }
     
     private void DrawTrajectory(Vector2 startPoint, Vector2 launchVelocity)
     {
         Vector2 gravity = Physics2D.gravity;
-        float timeStep = 0.05f;
-
-        Vector2 previousPoint = startPoint;
-
+        const float timeStep = 0.05f;
         for (int i = 0; i < maxDots; i++)
         {
             float t = i * timeStep;
@@ -189,8 +151,6 @@ public class PlayerController : MonoBehaviour
                 _trajectoryDots[i].transform.position = currentPoint;
                 _trajectoryDots[i].SetActive(true);
             }
-
-            previousPoint = currentPoint;
         }
 
         // 나머지 점 비활성화
@@ -199,25 +159,51 @@ public class PlayerController : MonoBehaviour
             _trajectoryDots[i].SetActive(false);
         }
     }
-
-    void Update()
+    
+    private void ClearTrajectory()
     {
-        if (!_isGrounded)
+        foreach (GameObject dot in _trajectoryDots)
         {
-            if (_rb.velocity.y > 0) // 올라가는 중이면 Jump 애니메이션 재생
-            {
-                if (!IsInAnimation("jump"))
-                {
-                    _animator.Play("jump");
-                }
-            }
-            else if (_rb.velocity.y < 0) // 떨어지기 시작하면 JumptoFall 애니메이션 재생
-            {
-                if (!IsInAnimation("Fall"))
-                {
-                    JumpToFall();
-                }
-            }
+            dot.SetActive(false);
         }
     }
+    
+    private void DrawVisualFeedback(Vector2 currentDragPosition)
+    {
+        if (lineRenderer != null)
+        {
+            lineRenderer.positionCount = 2;
+            lineRenderer.SetPosition(0, _startDragPosition);
+            lineRenderer.SetPosition(1, currentDragPosition);
+        }
+    }
+    
+    private void ClearVisualFeedback()
+    {
+        if (lineRenderer != null)
+        {
+            lineRenderer.positionCount = 0;
+        }
+    }
+
+    private void PlayAnimation(AnimationState state)
+    {
+        _animator.Play(AnimationHashes[(int)state]);
+    }
+    
+    private bool IsInAnimation(AnimationState state)
+    {
+        return _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == AnimationHashes[(int)state];
+    }
+
+    private void Attack()
+    {
+        _instantDamageField = Instantiate(damageField, transform.position, Quaternion.identity);
+    }
+
+    private void AttackEnd()
+    {
+        Destroy(_instantDamageField);
+    }
+    
 }

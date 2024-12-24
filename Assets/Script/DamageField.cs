@@ -8,9 +8,21 @@ public class DamageField : MonoBehaviour
   private BarrelController barrelController;
 
   private EnemyController _enemyController;
-  void Start()
+
+  private void Awake()
   {
     barrelController = FindObjectOfType<BarrelController>();
+  }
+
+  private void Start()
+  {
+    StartCoroutine(DestroyCountdown());
+  }
+
+  IEnumerator DestroyCountdown()
+  {
+    yield return new WaitForSeconds(1f);
+    Destroy(gameObject);
   }
   
   private void OnCollisionEnter2D(Collision2D collision)
@@ -23,8 +35,7 @@ public class DamageField : MonoBehaviour
       }
       else
       {
-        collision.gameObject.GetComponent<Rigidbody2D>().AddForceAtPosition(Vector2.right * 50000, transform.position);
-        collision.gameObject.GetComponent<EnemyController>()?.TakeDamage(50f);
+        collision.gameObject.GetComponent<Rigidbody2D>().AddForceAtPosition(Vector2.one * 500, transform.position);
       }
     }
   }

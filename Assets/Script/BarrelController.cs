@@ -7,8 +7,7 @@ public class BarrelController : MonoBehaviour
     public GameObject boom;
     public GameObject barrel;
     
-    bool isBoom = false;
-    public bool isDone = false;
+    private bool isBoom = false;
     public void GetDamage()
     {
         boom.SetActive(true);
@@ -31,8 +30,7 @@ public class BarrelController : MonoBehaviour
         if (isBoom)
         {
             yield return new WaitForSeconds(1f);
-            boom.SetActive(false);
-            isDone = true;
+            Destroy(gameObject);
         }
     }
 

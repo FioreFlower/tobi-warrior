@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
 {
   [Header("Enemy Properties")]
   private float health = 50f;
-  public float damageMultiplier = 10f;
+  private float damageMultiplier = 5f;
   private float minimumDamageThreshold = 5f;
 
   [Header("Effects")]
@@ -84,6 +84,7 @@ public class EnemyController : MonoBehaviour
     // 게임 매니저에 알림
     if (gameObject.CompareTag("Enemy"))
     {
+      Debug.Log(gameObject.name);
       GameManager.Instance.OnEnemyDestroyed();
     }
 

@@ -5,13 +5,13 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
   
-  private Transform target;
+  private Transform _target;
   
   [Header("MovementClamp")]
   public  Vector2 minBounds;
   public  Vector2 maxBounds;
 
-  private bool canMove = false;
+  private bool _canMove = false;
   public float cameraMoveSpeed;
   
   public Vector3 offset; // 카메라 오프셋
@@ -25,27 +25,27 @@ public class CameraController : MonoBehaviour
   IEnumerator Countdown()
   {
     yield return new WaitForSeconds(3);
-    canMove = true;
-    target = GameObject.FindGameObjectWithTag("Player").transform;
+    _canMove = true;
+    _target = GameObject.FindGameObjectWithTag("Player").transform;
   }
 
   void LateUpdate()
   {
-    if (canMove)
+    if (_canMove)
     {
-      if(target == null) return;
+      if(!_target) return;
       CameraMovement();
     }
   }
 
   public void SetTarget(Transform newTarget)
   {
-    target = newTarget;
+    _target = newTarget;
   }
 
   void CameraMovement()
   {
-    Vector3 desiredPosition = target.position + offset;
+    Vector3 desiredPosition = _target.position + offset;
     
     // 카메라 위치를 제한
     float clampedX = Mathf.Clamp(desiredPosition.x, minBounds.x, maxBounds.x);

@@ -9,8 +9,8 @@ public class BarrelDamageField : MonoBehaviour
     {
         if (!other.CompareTag("Ground") && !other.CompareTag("Player"))
         {
-          rb.AddForceAtPosition( Vector2.one*100f, transform.position, ForceMode2D.Impulse);
-          Destroy(other.gameObject);
+          rb.AddForceAtPosition( Vector2.one*10000f, transform.position, ForceMode2D.Impulse);
+          Destroy(gameObject);
         }
     }
 }

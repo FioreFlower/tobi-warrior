@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     
     [Header("Game Settings")]
     public int maxPlayer = 3;
-    public float resetDelay = 3f;
+    public float resetDelay = 2f;
     
     [Header("Prefabs")]
     public GameObject warriorPrefab;
@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
     
     public GameObject barrel;
     public BarrelController barrelController;
-
     
     CameraController cameraController;
     
@@ -64,10 +63,11 @@ public class GameManager : MonoBehaviour
     public void OnEnemyDestroyed()
     {
         enemyLeft--;
+        Debug.Log("enemy left :"+enemyLeft);
         CheckWinCondition();
     }
-    
-    void CheckWinCondition()
+
+    private void CheckWinCondition()
     {
         if (enemyLeft <= 0)
         {
@@ -78,22 +78,22 @@ public class GameManager : MonoBehaviour
             StartCoroutine(GameOver());
         }
     }
-    
-    IEnumerator LevelComplete()
+
+    private IEnumerator LevelComplete()
     {
         yield return new WaitForSeconds(resetDelay);
         levelCompletePanel.SetActive(true);
         isGameActive = false;
     }
-    
-    IEnumerator GameOver()
+
+    private IEnumerator GameOver()
     {
         yield return new WaitForSeconds(resetDelay);
         gameOverPanel.SetActive(true);
         isGameActive = false;
     }
-    
-    void SpawnNewWarrior()
+
+    private void SpawnNewWarrior()
     {
         if (playerLeft > 0 && isGameActive)
         {
@@ -103,10 +103,10 @@ public class GameManager : MonoBehaviour
             cameraController.SetTarget(newWarrior.transform);
         }
     }
-    
-    void UpdateUI()
+
+    private void UpdateUI()
     {
-        if (birdsLeftText != null)
+        if (birdsLeftText)
         {
             birdsLeftText.text = $"Warriors Left: {playerLeft}";
         }
@@ -124,16 +124,10 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (barrelController.isDone)
-        {
-            Destroy(barrel.gameObject);
-        }
-
-        if ( GameObject.FindGameObjectWithTag("Player") == null)
+        if ( !GameObject.FindGameObjectWithTag("Player"))
         {
             SpawnNewWarrior();
         }
-
         CheckWinCondition();
     }
 }
